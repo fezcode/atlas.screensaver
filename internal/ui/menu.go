@@ -5,9 +5,11 @@ import (
 
 	"atlas.screensaver/internal/savers"
 	"atlas.screensaver/internal/savers/bouncing"
+	"atlas.screensaver/internal/savers/dna"
 	"atlas.screensaver/internal/savers/matrix"
 	"atlas.screensaver/internal/savers/pipes"
 	"atlas.screensaver/internal/savers/stars"
+	"atlas.screensaver/internal/savers/waves"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
@@ -30,7 +32,7 @@ type Model struct {
 
 func NewModel() Model {
 	return Model{
-		choices: []string{"Pipes", "Stars", "Matrix", "Bouncing", "Random"},
+		choices: []string{"Pipes", "Stars", "Matrix", "Bouncing", "DNA", "Waves", "Random"},
 	}
 }
 
@@ -75,7 +77,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			choice := m.choices[m.cursor]
 			if choice == "Random" {
-				actualChoices := []string{"Pipes", "Stars", "Matrix", "Bouncing"}
+				actualChoices := []string{"Pipes", "Stars", "Matrix", "Bouncing", "DNA", "Waves"}
 				choice = actualChoices[rand.Intn(len(actualChoices))]
 			}
 			
@@ -88,6 +90,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.active = matrix.NewModel()
 			case "Bouncing":
 				m.active = bouncing.NewModel()
+			case "DNA":
+				m.active = dna.NewModel()
+			case "Waves":
+				m.active = waves.NewModel()
 			}
 			
 			if m.active != nil {
