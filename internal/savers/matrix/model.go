@@ -82,7 +82,6 @@ func (m *Model) step() {
 			m.droplets[i] = m.newDroplet()
 			m.droplets[i].y = -float64(len(m.droplets[i].chars))
 		}
-		// Randomly change a char
 		if rand.Float64() < 0.1 {
 			d.chars[rand.Intn(len(d.chars))] = matrixChars[rand.Intn(len(matrixChars))]
 		}
@@ -104,12 +103,10 @@ func (m *Model) View() string {
 		for i, char := range d.chars {
 			y := int(d.y) - i
 			if y >= 0 && y < m.height {
-				// Style based on position in droplet
 				style := lipgloss.NewStyle()
 				if i == 0 {
-					style = style.Foreground(lipgloss.Color("#FFFFFF")).Bold(true) // Head
+					style = style.Foreground(lipgloss.Color("#FFFFFF")).Bold(true)
 				} else {
-					// Fade green
 					alpha := 1.0 - float64(i)/float64(len(d.chars))
 					if alpha < 0.2 {
 						style = style.Foreground(lipgloss.Color("#003300"))
@@ -130,8 +127,7 @@ func (m *Model) View() string {
 			sb.WriteString(cell)
 		}
 		if i < m.height-1 {
-			sb.WriteString("
-")
+			sb.WriteString("\n")
 		}
 	}
 	return sb.String()

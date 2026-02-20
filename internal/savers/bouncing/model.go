@@ -103,8 +103,7 @@ func (m *Model) View() string {
 			}
 		}
 		if y < m.height-1 {
-			sb.WriteString("
-")
+			sb.WriteString("\n")
 		}
 	}
 	return sb.String()
