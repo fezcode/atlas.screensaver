@@ -4,6 +4,8 @@ import (
 	"math/rand"
 
 	"atlas.screensaver/internal/savers"
+	"atlas.screensaver/internal/savers/bouncing"
+	"atlas.screensaver/internal/savers/matrix"
 	"atlas.screensaver/internal/savers/pipes"
 	"atlas.screensaver/internal/savers/stars"
 	tea "github.com/charmbracelet/bubbletea"
@@ -28,7 +30,7 @@ type Model struct {
 
 func NewModel() Model {
 	return Model{
-		choices: []string{"Pipes", "Stars", "Random"},
+		choices: []string{"Pipes", "Stars", "Matrix", "Bouncing", "Random"},
 	}
 }
 
@@ -73,19 +75,26 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "enter":
 			choice := m.choices[m.cursor]
 			if choice == "Random" {
-				r := rand.Intn(2)
-				if r == 0 { choice = "Pipes" } else { choice = "Stars" }
+				actualChoices := []string{"Pipes", "Stars", "Matrix", "Bouncing"}
+				choice = actualChoices[rand.Intn(len(actualChoices))]
 			}
 			
-			if choice == "Pipes" {
+			switch choice {
+			case "Pipes":
 				m.active = pipes.NewModel()
-			} else {
+			case "Stars":
 				m.active = stars.NewModel()
+			case "Matrix":
+				m.active = matrix.NewModel()
+			case "Bouncing":
+				m.active = bouncing.NewModel()
 			}
 			
-			// Init the saver with current size
-			m.active.Update(tea.WindowSizeMsg{Width: m.width, Height: m.height})
-			return m, m.active.Init()
+			if m.active != nil {
+				// Init the saver with current size
+				m.active.Update(tea.WindowSizeMsg{Width: m.width, Height: m.height})
+				return m, m.active.Init()
+			}
 		}
 	}
 	return m, nil
