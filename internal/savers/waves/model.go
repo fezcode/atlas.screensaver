@@ -76,8 +76,7 @@ func (m *Model) View() string {
 			sb.WriteString(lipgloss.NewStyle().Foreground(color).Render(chars[idx]))
 		}
 		if y < m.height-1 {
-			sb.WriteString("
-")
+			sb.WriteString("\n")
 		}
 	}
 
