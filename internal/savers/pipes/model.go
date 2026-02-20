@@ -184,8 +184,8 @@ func (m *Model) step() {
 		p.dir = newDir
 	}
 	
-	if active == 0 || rand.Float64() < 0.05 {
-		if len(m.pipes) < 15 {
+	if active == 0 || rand.Float64() < 0.15 {
+		if len(m.pipes) < 30 {
 			m.addPipe()
 		} else if active == 0 {
 			m.reset()
